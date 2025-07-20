@@ -2,29 +2,29 @@ name: Generate Pacman Contribution Graph
 
 on:
   schedule:
-    - cron: '0 0 * * 0'  # every Sunday
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Generate SVG
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
 
-      - name: Generate SVG
-        uses: platane/snk@v3
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Generate snake animation
+        uses: Platane/snk@v3
         with:
-          github_user_name: ${{ github.repository_owner }}
+          github_user_name: dragonmoth
           outputs: |
             ./output/pacman-contribution-graph.svg
             ./output/pacman-contribution-graph-dark.svg
 
-      - name: Push SVG to GitHub
+      - name: Commit & Push
         uses: EndBug/add-and-commit@v9
         with:
           author_name: github-actions
           author_email: github-actions@github.com
-          message: "Generate Pacman Contribution Graph"
-          add: "output/*.svg"
+          message: "Generate Pacman graph"
+          add: "./output"
